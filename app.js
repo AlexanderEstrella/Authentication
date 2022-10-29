@@ -1,9 +1,9 @@
 //jshint esversion:6
+require("dotenv").config();
 const bodyParser = require("body-parser");
 const express = require("express");
 const ejs = require("ejs");
 const mongoose = require("mongoose");
-require("dotenv").config();
 const encrypt = require("mongoose-encryption");
 const app = express();
 const DB = process.env.DATABASE_URL;
@@ -29,9 +29,10 @@ const userSchema = new mongoose.Schema({
   password: String,
 });
 
-const secret = "secret code";
+const secret = process.env.SECRET;
 userSchema.plugin(encrypt, {
   secret: secret,
+  encryptedFields: ["password"],
 });
 
 const User = new mongoose.model("User", userSchema);
